@@ -31,7 +31,6 @@ public class UserDaoImpl implements UserDao {
             session.save(user);
             transaction.commit();
             LOGGER.info("User " + user.toString() + " insert");
-            return;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
