@@ -19,8 +19,7 @@ import spring.intro.model.User;
         "spring.intro.dao",
 })
 public class AppConfig {
-    @Autowired
-    public Environment env;
+    private Environment env;
 
     public AppConfig(Environment environment) {
         this.env = environment;
