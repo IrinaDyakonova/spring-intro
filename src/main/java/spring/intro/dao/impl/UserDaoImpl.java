@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import spring.intro.dao.UserDao;
 import spring.intro.exeption.DataProcessingException;
@@ -52,6 +53,18 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all user ", e);
+        }
+    }
+
+    @Override
+    public User get(Long userId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery(
+                    "From User where id = :userId");
+            query.setParameter("userId", userId);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get available user", e);
         }
     }
 }

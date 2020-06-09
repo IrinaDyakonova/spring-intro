@@ -1,7 +1,7 @@
 package spring.intro.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,24 +21,16 @@ public class UserController {
 
     @GetMapping("/get/{id}")
     public UserResponseDto get(@PathVariable Long id) {
-        UserResponseDto user = null;
-        user = new UserResponseDto(userService
-                .listUsers()
-                .stream()
-                .filter(user1 -> user1.getId().equals(id))
-                .findFirst()
-                .get());
-        return user;
+        return new UserResponseDto(userService.get(id));
     }
 
     @GetMapping("/")
     public List<UserResponseDto> getAll() {
-        List<UserResponseDto> usersList = new ArrayList<>();
-        userService
+        return userService
                 .listUsers()
                 .stream()
-                .forEach(user -> usersList.add(new UserResponseDto(user)));
-        return usersList;
+                .map(user -> new UserResponseDto(user))
+                        .collect(Collectors.toList());
     }
 
     @GetMapping("/inject")
